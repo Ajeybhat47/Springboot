@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-AuctionApplication<auction>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.auction.AuctionApplication",
+            "projectName": "auction",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
