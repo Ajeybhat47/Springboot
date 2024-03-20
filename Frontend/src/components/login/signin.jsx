@@ -25,9 +25,11 @@ function SignInForm() {
       password
     }).then(response => {
       console.log(response);
+      alert("User logged in successfully");
       // Handle successful login response, e.g., redirect to dashboard
     }).catch(error => {
       console.log(error);
+      alert("Error logging in user");
       // Handle login error, e.g., display error message to user
     });
 

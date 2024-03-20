@@ -34,8 +34,10 @@ function SignUpForm() {
       username: name
     }).then(response => {
       console.log(response);
+      alert("User created successfully");
     }).catch(error => {
       console.log(error);
+      alert("Error creating user");
     });
 
 
