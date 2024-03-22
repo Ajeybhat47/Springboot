@@ -20,6 +20,9 @@ public class User {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "role")
+    private String role;
+
     // Getters and setters
     public Long getUserId() {
         return user_id;
