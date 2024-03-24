@@ -12,6 +12,7 @@ public class Auction {
     // map to store bids
     private HashMap<Integer, Bid> bids;
 
+    
     public Auction(int auctionId, Item item, double basePrice, String status, int winnerId) {
         this.auctionId = auctionId;
         this.item = item;

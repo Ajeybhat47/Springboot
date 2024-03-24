@@ -8,6 +8,7 @@ public class AuctionService {
 
     @Autowired
     private AuctionRepository auctionRepository;
+    private BidService bidService;
 
     public void createAuction(Auction auction) {
         if(auction != null)
@@ -16,4 +17,8 @@ public class AuctionService {
             System.out.println("Auction is null");
     }
    
+    // add bid to auction
+    public void addBidToAuction(int auctionId, Bid bid) {
+        Auction auction = auctionRepository
+
 }
