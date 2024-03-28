@@ -27,18 +27,18 @@ public class UserController {
         return userService.getUserById(id);
     }
     
-    @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody userLoginRequest userLoginRequest) {
-        User user = userService.fetchByemail(userLoginRequest.getEmail());
+    // @PostMapping("/login")
+    // public ResponseEntity<String> loginUser(@RequestBody userLoginRequest userLoginRequest) {
+    //     User user = userService.fetchByemail(userLoginRequest.getEmail());
         
-        // Check if the user exists and the password is correct
-        if (user != null && user.getPassword().equals(userLoginRequest.getPassword())) {
-            return ResponseEntity.ok("Login successful"); // Return a success response
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password"); // Return an error response
-        }
+    //     // Check if the user exists and the password is correct
+    //     if (user != null && user.getPassword().equals(userLoginRequest.getPassword())) {
+    //         return ResponseEntity.ok("Login successful"); // Return a success response
+    //     } else {
+    //         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password"); // Return an error response
+    //     }
 
-    }
+    // }
 
 
     @PostMapping
@@ -54,11 +54,11 @@ public class UserController {
         return "Deleted...";
     }
 
-    @GetMapping("/byid/{id}")
-    public String Custom(@PathVariable Long id){
+    // @GetMapping("/byid/{id}")
+    // public String Custom(@PathVariable Long id){
         
         
-        return userService.Custom(id).getUsername();
-    }
+    //     return userService.Custom(id).getUsername();
+    // }
 
 }

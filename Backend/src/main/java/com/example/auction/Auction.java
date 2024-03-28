@@ -1,32 +1,58 @@
 package com.example.auction;
 
-import java.util.HashMap;
+import jakarta.persistence.*;
+import java.util.List;
 
+@Entity
+@Table(name = "auction")
 public class Auction {
 
-    private int auctionId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "auction_id")
+    private Long auctionId;
+
+
+
+    @ManyToOne
+    @JoinColumn(name = "item_id")
     private Item item;
-    private double basePrice;
-    private String status;
-    private int winnerId;
-    // map to store bids
-    private HashMap<Integer, Bid> bids;
+
+
+
+    @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL)
+    private List<Bid> bids;
 
     
-    public Auction(int auctionId, Item item, double basePrice, String status, int winnerId) {
-        this.auctionId = auctionId;
+
+    @Column(name = "base_price")
+    private double basePrice;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "winner_id")
+    private Long winnerId;
+
+    
+
+    // Constructors, getters, setters, and other methods
+
+    public Auction() {
+    }
+
+    public Auction(Item item, double basePrice, String status, Long winnerId) {
         this.item = item;
         this.basePrice = basePrice;
         this.status = status;
         this.winnerId = winnerId;
     }
 
-    // getters and setters
-    public int getAuctionId() {
+    public Long getAuctionId() {
         return auctionId;
     }
 
-    public void setAuctionId(int auctionId) {
+    public void setAuctionId(Long auctionId) {
         this.auctionId = auctionId;
     }
 
@@ -54,22 +80,31 @@ public class Auction {
         this.status = status;
     }
 
-    public int getWinnerId() {
+    public Long getWinnerId() {
         return winnerId;
     }
 
-    public void setWinnerId(int winnerId) {
+    public void setWinnerId(Long winnerId) {
         this.winnerId = winnerId;
     }
 
-    public void findWinner() {
-        // Logic to find winner
-        System.out.println("Winner found for auction: " + this.auctionId);
+    public List<Bid> getBids() {
+        return bids;
     }
 
-    public void addBid(Bid bid) {
-        bids.put(bid.getBidId(), bid);
+    public void setBids(List<Bid> bids) {
+        this.bids = bids;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "Auction{" +
+                "auctionId=" + auctionId +
+                ", item=" + item +
+                ", basePrice=" + basePrice +
+                ", status='" + status + '\'' +
+                ", winnerId=" + winnerId +
+                '}';
+    }
+
 }

@@ -1,26 +1,46 @@
 package com.example.auction;
 
-public class Item {
-    private int itemId;
-    private String itemName;
-    private String description;
-    private double initialPrice;
-    private int sellerId;
+import jakarta.persistence.*;
 
-    public Item(int itemId, String itemName, String description, double initialPrice, int sellerId) {
-        this.itemId = itemId;
+@Entity
+@Table(name = "item")
+public class Item {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "item_id")
+    private Long itemId;
+    
+
+    @Column(name = "item_name")
+    private String itemName;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "initial_price")
+    private double initialPrice;
+
+    @Column(name = "seller_id")
+    private Long sellerId;
+
+    // Constructors, getters, setters, and other methods
+
+    public Item() {
+    }
+
+    public Item(String itemName, String description, double initialPrice, Long sellerId) {
         this.itemName = itemName;
         this.description = description;
         this.initialPrice = initialPrice;
         this.sellerId = sellerId;
     }
 
-    // getters and setters
-    public int getItemId() {
+    public Long getItemId() {
         return itemId;
-    }   
+    }
 
-    public void setItemId(int itemId) {
+    public void setItemId(Long itemId) {
         this.itemId = itemId;
     }
 
@@ -38,7 +58,7 @@ public class Item {
 
     public void setDescription(String description) {
         this.description = description;
-    }   
+    }
 
     public double getInitialPrice() {
         return initialPrice;
@@ -46,17 +66,25 @@ public class Item {
 
     public void setInitialPrice(double initialPrice) {
         this.initialPrice = initialPrice;
-    }   
+    }
 
-    public int getSellerId() {
+    public Long getSellerId() {
         return sellerId;
     }
 
-    public void setSellerId(int sellerId) {
+    public void setSellerId(Long sellerId) {
         this.sellerId = sellerId;
     }
 
-    
+    @Override
+    public String toString() {
+        return "Item{" +
+                "itemId=" + itemId +
+                ", itemName='" + itemName + '\'' +
+                ", description='" + description + '\'' +
+                ", initialPrice=" + initialPrice +
+                ", sellerId=" + sellerId +
+                '}';
+    }
 
-    
 }

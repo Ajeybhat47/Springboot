@@ -30,12 +30,4 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public User Custom(Long id){
-        return userRepository.Custom(id);
-    }
-
-    public User fetchByemail(String username){
-        return userRepository.fetchByemail(username);
-    }
-
 }
