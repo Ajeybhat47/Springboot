@@ -2,34 +2,41 @@ package com.example.auction;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 @Service
 public class AuctionService {
 
     @Autowired
     private AuctionRepository auctionRepository;
-    @Autowired
-    private BidService bidService;
 
+    @Transactional
     public void createAuction(Auction auction) {
-        if(auction != null)
-            auctionRepository.save(auction);
-        else
-            System.out.println("Auction is null");
+        // Additional business logic if needed
+        auctionRepository.save(auction);
     }
-   
-    // add bid to auction
-    public void addBidToAuction(int auctionId, Bid bid) {
 
-        if(bid!= null)
-        {
-            bidService.createBid(bid); 
-        }
-        else
-        {
-            System.out.println("Bid is null");
-        }
-
+    @Transactional
+    public void addBidToAuction(Long auctionId, Bid bid) {
+        Auction auction = auctionRepository.findById(auctionId)
+                .orElseThrow(() -> new RuntimeException("Auction not found with id: " + auctionId));
+        // Additional business logic if needed
+        auction.getBids().add(bid);
+        bid.setAuction(auction);
+        auctionRepository.save(auction);
     }
-        
+
+    @Transactional(readOnly = true)
+    public Auction getAuctionById(Long auctionId) {
+        return auctionRepository.findById(auctionId)
+                .orElseThrow(() -> new RuntimeException("Auction not found with id: " + auctionId));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Auction> getAllAuctions() {
+        return auctionRepository.findAll();
+    }
+
+    // Other methods related to auction business logic can be added here
 }
