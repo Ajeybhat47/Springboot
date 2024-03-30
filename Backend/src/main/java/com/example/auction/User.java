@@ -1,29 +1,39 @@
 package com.example.auction;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
 public class User {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long userId;
-
+    
     @Column(name = "email")
     private String email;
-
+    
     @Column(name = "password")
     private String password;
-
+    
     @Column(name = "username")
     private String username;
-
+    
     @Column(name = "role")
     private String role;
-
-    // Constructors, getters, setters, and other methods
+    
+    @OneToMany(mappedBy = "winner")
+    private List<Auction> wonAuctions;
+    
+    @OneToMany(mappedBy = "seller")
+    private List<Item> itemsForSale;
+    
+    @OneToMany(mappedBy = "bidder")
+    private List<Bid> bids;
+    
+    //constructor Getters and setters
 
     public User() {
     }
@@ -75,6 +85,30 @@ public class User {
         this.role = role;
     }
 
+    public List<Auction> getWonAuctions() {
+        return wonAuctions;
+    }
+
+    public void setWonAuctions(List<Auction> wonAuctions) {
+        this.wonAuctions = wonAuctions;
+    }
+
+    public List<Item> getItemsForSale() {
+        return itemsForSale;
+    }
+
+    public void setItemsForSale(List<Item> itemsForSale) {
+        this.itemsForSale = itemsForSale;
+    }
+
+    public List<Bid> getBids() {
+        return bids;
+    }
+
+    public void setBids(List<Bid> bids) {
+        this.bids = bids;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -86,5 +120,6 @@ public class User {
                 '}';
     }
 
+    
 
 }

@@ -5,35 +5,35 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "item")
 public class Item {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")
     private Long itemId;
     
-
     @Column(name = "item_name")
     private String itemName;
-
+    
     @Column(name = "description")
     private String description;
-
+    
     @Column(name = "initial_price")
-    private double initialPrice;
-
-    @Column(name = "seller_id")
-    private Long sellerId;
-
-    // Constructors, getters, setters, and other methods
+    private Double initialPrice;
+    
+    @ManyToOne
+    @JoinColumn(name = "seller_id" )
+    private User seller;
+    
+    // Getters and setters
 
     public Item() {
     }
 
-    public Item(String itemName, String description, double initialPrice, Long sellerId) {
+    public Item(String itemName, String description, Double initialPrice, User seller) {
         this.itemName = itemName;
         this.description = description;
         this.initialPrice = initialPrice;
-        this.sellerId = sellerId;
+        this.seller = seller;
     }
 
     public Long getItemId() {
@@ -60,20 +60,20 @@ public class Item {
         this.description = description;
     }
 
-    public double getInitialPrice() {
+    public Double getInitialPrice() {
         return initialPrice;
     }
 
-    public void setInitialPrice(double initialPrice) {
+    public void setInitialPrice(Double initialPrice) {
         this.initialPrice = initialPrice;
     }
 
-    public Long getSellerId() {
-        return sellerId;
+    public User getSeller() {
+        return seller;
     }
 
-    public void setSellerId(Long sellerId) {
-        this.sellerId = sellerId;
+    public void setSeller(User seller) {
+        this.seller = seller;
     }
 
     @Override
@@ -83,8 +83,8 @@ public class Item {
                 ", itemName='" + itemName + '\'' +
                 ", description='" + description + '\'' +
                 ", initialPrice=" + initialPrice +
-                ", sellerId=" + sellerId +
+                ", seller=" + seller +
                 '}';
     }
-
+    
 }

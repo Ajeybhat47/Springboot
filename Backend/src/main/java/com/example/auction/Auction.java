@@ -1,51 +1,51 @@
 package com.example.auction;
 
 import jakarta.persistence.*;
+
 import java.util.List;
+
 
 @Entity
 @Table(name = "auction")
 public class Auction {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "auction_id")
     private Long auctionId;
-
-
-
+    
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
-
-
-
-    @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL)
+    
+    @OneToMany
+    @JoinColumn(name = "auction_id")
     private List<Bid> bids;
 
     
-
-    @Column(name = "base_price")
-    private double basePrice;
-
-    @Column(name = "status")
-    private String status;
-
-    @Column(name = "winner_id")
-    private Long winnerId;
+    @ManyToOne
+    @JoinColumn(name = "winner_id")
+    private User winner;
 
     
-
-    // Constructors, getters, setters, and other methods
+    @Column(name = "base_price")
+    private Double basePrice;
+    
+    @Column(name = "status")
+    private String status;
+    
+    
+    
+    
+    // Getters and setters
 
     public Auction() {
     }
 
-    public Auction(Item item, double basePrice, String status, Long winnerId) {
+    public Auction(Item item, Double basePrice, String status) {
         this.item = item;
         this.basePrice = basePrice;
         this.status = status;
-        this.winnerId = winnerId;
     }
 
     public Long getAuctionId() {
@@ -64,11 +64,11 @@ public class Auction {
         this.item = item;
     }
 
-    public double getBasePrice() {
+    public Double getBasePrice() {
         return basePrice;
     }
 
-    public void setBasePrice(double basePrice) {
+    public void setBasePrice(Double basePrice) {
         this.basePrice = basePrice;
     }
 
@@ -80,20 +80,12 @@ public class Auction {
         this.status = status;
     }
 
-    public Long getWinnerId() {
-        return winnerId;
+    public User getWinner() {
+        return winner;
     }
 
-    public void setWinnerId(Long winnerId) {
-        this.winnerId = winnerId;
-    }
-
-    public List<Bid> getBids() {
-        return bids;
-    }
-
-    public void setBids(List<Bid> bids) {
-        this.bids = bids;
+    public void setWinner(User winner) {
+        this.winner = winner;
     }
 
     @Override
@@ -103,8 +95,9 @@ public class Auction {
                 ", item=" + item +
                 ", basePrice=" + basePrice +
                 ", status='" + status + '\'' +
-                ", winnerId=" + winnerId +
+                ", winner=" + winner +
                 '}';
     }
+
 
 }

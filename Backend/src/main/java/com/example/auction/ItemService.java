@@ -16,4 +16,8 @@ public class ItemService {
             System.out.println("Item is null");
     }
 
+    public Item getItemById(Long itemId) {
+        
+        return itemRepository.findById(itemId).orElse(null);
+    }
 }

@@ -1,39 +1,40 @@
 package com.example.auction;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "bid")
 public class Bid {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bid_id")
     private Long bidId;
-
+    
+    @ManyToOne
+    @JoinColumn(name = "bidder_id")
+    private User bidder;
+    
+    @Column(name = "bid_amount")
+    private Double bidAmount;
+    
+    @Column(name = "bid_time")
+    private LocalDateTime bidTime;
+    
     @ManyToOne
     @JoinColumn(name = "auction_id")
     private Auction auction;
-
-
-    @Column(name = "bidder_id")
-    private Long bidderId;
-
-    @Column(name = "bid_amount")
-    private double bidAmount;
-
-    @Column(name = "bid_time")
-    private Date bidTime;
-
     
-    // Constructors, getters, setters, and other methods
+    // Getters and setters
 
     public Bid() {
     }
 
-    public Bid(Long bidderId, double bidAmount, Date bidTime, Auction auction) {
-        this.bidderId = bidderId;
+
+    public Bid(User bidder, Double bidAmount, LocalDateTime bidTime, Auction auction) {
+        this.bidder = bidder;
         this.bidAmount = bidAmount;
         this.bidTime = bidTime;
         this.auction = auction;
@@ -47,27 +48,28 @@ public class Bid {
         this.bidId = bidId;
     }
 
-    public Long getBidderId() {
-        return bidderId;
+    public User getBidder() {
+        return bidder;
     }
 
-    public void setBidderId(Long bidderId) {
-        this.bidderId = bidderId;
+    public void setBidder(User bidder) {
+        this.bidder = bidder;
     }
 
-    public double getBidAmount() {
+    public Double getBidAmount() {
         return bidAmount;
     }
 
-    public void setBidAmount(double bidAmount) {
+    public void setBidAmount(Double bidAmount) {
         this.bidAmount = bidAmount;
     }
 
-    public Date getBidTime() {
+
+    public LocalDateTime getBidTime() {
         return bidTime;
     }
 
-    public void setBidTime(Date bidTime) {
+    public void setBidTime(LocalDateTime bidTime) {
         this.bidTime = bidTime;
     }
 
@@ -83,10 +85,11 @@ public class Bid {
     public String toString() {
         return "Bid{" +
                 "bidId=" + bidId +
-                ", bidderId=" + bidderId +
+                ", bidder=" + bidder +
                 ", bidAmount=" + bidAmount +
                 ", bidTime=" + bidTime +
                 ", auction=" + auction +
                 '}';
     }
+    
 }

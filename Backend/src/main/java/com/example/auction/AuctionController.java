@@ -1,7 +1,12 @@
 package com.example.auction;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auction")
@@ -11,33 +16,19 @@ public class AuctionController {
     private AuctionService auctionService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private BidService bidService;
+    private ItemService itemService;
 
     @PostMapping("/createAuction")
-    public void createAuction(@RequestBody Auction auction) {
+    public ResponseEntity<String> createAuction(@RequestBody Auction auction,@RequestParam("itemId") Long itemId) {
+
+        // Fetch item from database using provided itemId
+        Item item = itemService.getItemById(itemId);
+
+        // Associate the item with the auction
+        auction.setItem(item);
+
         auctionService.createAuction(auction);
-    }
 
-    @PostMapping("/addBidToAuction/{auctionId}")
-    public void addBidToAuction(@PathVariable("auctionId") Long auctionId, @RequestBody Bid bid) {
-        auctionService.addBidToAuction(auctionId, bid);
-    }
-
-    @PostMapping("/createUser")
-    public void createUser(@RequestBody User user) {
-        userService.createUser(user);
-    }
-
-    @DeleteMapping("/deleteUser/{id}")
-    public void deleteUser(@PathVariable("id") Long id) {
-        userService.deleteUser(id);
-    }
-
-    @PostMapping("/createBid")
-    public void createBid(@RequestBody Bid bid) {
-        bidService.createBid(bid);
+        return ResponseEntity.ok("Auction created successfully");
     }
 }
