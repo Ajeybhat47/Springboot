@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/auction")
@@ -17,6 +22,9 @@ public class AuctionController {
 
     @Autowired
     private ItemService itemService;
+
+    @Autowired
+    private BidService bidService;
 
     @PostMapping("/createAuction")
     public ResponseEntity<String> createAuction(@RequestBody Auction auction,@RequestParam("itemId") Long itemId) {
@@ -31,4 +39,11 @@ public class AuctionController {
 
         return ResponseEntity.ok("Auction created successfully");
     }
+
+
+    @GetMapping("/{auctionId}/getAllBids")
+    public ResponseEntity<List<Bid>> getMethodName(@PathVariable Long auctionId) {
+        return ResponseEntity.ok(bidService.getBidsForAuction(auctionId));
+    }
+
 }

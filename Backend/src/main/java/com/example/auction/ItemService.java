@@ -20,4 +20,14 @@ public class ItemService {
         
         return itemRepository.findById(itemId).orElse(null);
     }
+
+    public String deleteItem(Long itemId) {
+        if(itemRepository.existsById(itemId))
+        {
+            itemRepository.deleteById(itemId);
+            return "Item deleted successfully";
+        }
+        else
+            return "Item not found";
+    }
 }
