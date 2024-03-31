@@ -1,32 +1,32 @@
-package com.example.auction;
+
+package com.example.auction.Models;
 
 import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "bid")
 public class Bid {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bid_id")
     private Long bidId;
-    
+
     @ManyToOne
     @JoinColumn(name = "bidder_id")
     private User bidder;
-    
+
     @Column(name = "bid_amount")
     private Double bidAmount;
-    
+
     @Column(name = "bid_time")
     private LocalDateTime bidTime;
-    
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY) // FetchType.LAZY for lazy loading
     @JoinColumn(name = "auction_id")
     private Auction auction;
-    
+
     // Getters and setters
 
     public Bid() {

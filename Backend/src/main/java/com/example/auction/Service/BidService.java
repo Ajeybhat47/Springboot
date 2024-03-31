@@ -1,7 +1,14 @@
-package com.example.auction;
+package com.example.auction.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.auction.Models.Auction;
+import com.example.auction.Models.Bid;
+import com.example.auction.Models.User;
+import com.example.auction.Repository.AuctionRepository;
+import com.example.auction.Repository.BidRepository;
+import com.example.auction.Repository.UserRepository;
 
 import java.util.List;
 @Service

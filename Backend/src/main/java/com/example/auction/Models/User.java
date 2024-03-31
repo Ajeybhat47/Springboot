@@ -1,40 +1,43 @@
-package com.example.auction;
+package com.example.auction.Models;
 
 import jakarta.persistence.*;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+
 @Entity
 @Table(name = "user")
 public class User {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long userId;
-    
+
     @Column(name = "email")
     private String email;
-    
+
     @Column(name = "password")
     private String password;
-    
+
     @Column(name = "username")
     private String username;
-    
+
     @Column(name = "role")
     private String role;
-    
+
     @OneToMany(mappedBy = "winner")
     private List<Auction> wonAuctions;
-    
+
     @OneToMany(mappedBy = "seller")
     private List<Item> itemsForSale;
-    
-    @OneToMany(mappedBy = "bidder")
-    private List<Bid> bids;
-    
-    //constructor Getters and setters
 
+    @OneToMany(mappedBy = "bidder")
+    @JsonBackReference // For custom serialization to break the loop
+    private List<Bid> bids;
+
+    // Getters and setter
     public User() {
     }
 

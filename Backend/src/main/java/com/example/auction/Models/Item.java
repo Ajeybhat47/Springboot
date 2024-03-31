@@ -1,29 +1,29 @@
-package com.example.auction;
+package com.example.auction.Models;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "item")
 public class Item {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")
     private Long itemId;
-    
+
     @Column(name = "item_name")
     private String itemName;
-    
+
     @Column(name = "description")
     private String description;
-    
+
     @Column(name = "initial_price")
     private Double initialPrice;
-    
-    @ManyToOne
-    @JoinColumn(name = "seller_id" )
+
+    @ManyToOne(fetch = FetchType.LAZY) // FetchType.LAZY for lazy loading
+    @JoinColumn(name = "seller_id")
     private User seller;
-    
+
     // Getters and setters
 
     public Item() {
