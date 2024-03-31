@@ -1,11 +1,14 @@
-package com.example.auction;
+package com.example.auction.Controllers;
 // UserController.java
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+// import org.springframework.http.HttpStatus;
+// import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.example.auction.Models.User;
+import com.example.auction.Service.UserService;
 
 import java.util.List;
 

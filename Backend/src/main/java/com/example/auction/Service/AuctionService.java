@@ -1,9 +1,12 @@
-package com.example.auction;
+package com.example.auction.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 // import java.util.List;
+
+import com.example.auction.Models.Auction;
+import com.example.auction.Repository.AuctionRepository;
 
 @Service
 public class AuctionService {
