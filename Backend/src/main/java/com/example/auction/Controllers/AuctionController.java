@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.auction.DTOModels.BidDTO;
+import com.example.auction.DTOModels.UserDTO;
 import com.example.auction.Models.Auction;
-import com.example.auction.Models.Bid;
 import com.example.auction.Models.Item;
 import com.example.auction.Service.AuctionService;
 import com.example.auction.Service.BidService;
@@ -50,8 +51,14 @@ public class AuctionController {
 
 
     @GetMapping("/{auctionId}/getAllBids")
-    public ResponseEntity<List<Bid>> getMethodName(@PathVariable Long auctionId) {
+    public ResponseEntity<List<BidDTO>> getMethodName(@PathVariable Long auctionId) {
         return ResponseEntity.ok(bidService.getBidsForAuction(auctionId));
+    }
+
+    @GetMapping("/{auctionId}/getWinner")
+    public ResponseEntity<UserDTO> getWinner(@PathVariable Long auctionId) {
+
+        return ResponseEntity.ok(auctionService.getWinner(auctionId));
     }
 
 }

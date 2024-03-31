@@ -20,11 +20,6 @@ public class BidController {
     @Autowired
     private BidService bidService;
     
-    
-    public void createBid(Bid bid) {
-        bidService.createBid(bid);
-    }
-    
 
     @PostMapping("/addBid")
     public ResponseEntity<String> postMethodName(@RequestBody Bid bid , @RequestParam("auctionId") Long auctionId,@RequestParam("userId") Long userId) {

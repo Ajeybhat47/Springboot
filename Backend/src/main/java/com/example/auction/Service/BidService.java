@@ -2,7 +2,7 @@ package com.example.auction.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.example.auction.DTOModels.BidDTO;
 import com.example.auction.Models.Auction;
 import com.example.auction.Models.Bid;
 import com.example.auction.Models.User;
@@ -11,6 +11,8 @@ import com.example.auction.Repository.BidRepository;
 import com.example.auction.Repository.UserRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class BidService {
 
@@ -20,26 +22,19 @@ public class BidService {
     @Autowired
     private AuctionRepository auctionRepository;
 
-    @Autowired 
+    @Autowired
     private UserRepository userRepository;
 
-    public void createBid(Bid bid) {
-        if(bid != null)
-            bidRepository.save(bid);
-        else
-            System.out.println("Bid is null");
+
+    public List<BidDTO> getBidsForAuction(Long auctionId) {
+        List<Bid> bids = bidRepository.findByAuctionId(auctionId);
+
+        return bids.stream().map(this::mapEntityToDto).collect(Collectors.toList());
     }
 
 
-    public List<Bid> getBidsForAuction(Long auctionId) {
-        return bidRepository.findByAuctionId(auctionId);
-    } 
-    
-
-    public String addBid(Bid bid,Long auctionId,Long userId)
-    {
-        if(auctionId !=null && userId != null && bid !=null)
-        {
+    public String addBid(Bid bid, Long auctionId, Long userId) {
+        if (auctionId != null && userId != null && bid != null) {
             Auction auction = auctionRepository.getReferenceById(auctionId);
             User user = userRepository.getReferenceById(userId);
             bid.setBidder(user);
@@ -47,13 +42,35 @@ public class BidService {
             
             bidRepository.save(bid);
             return "Done";
-        }
-        else{
+        } else {
             return "error";
         }
-        
-       
-        
     }
-    
+
+
+    private BidDTO mapEntityToDto(Bid bid) {
+        return new BidDTO(
+                bid.getBidId(),
+                bid.getAuction().getAuctionId(),
+                bid.getBidder().getUserId(),
+                bid.getBidAmount(),
+                bid.getBidTime()
+        );
+    }
+
+    // private Bid mapDtoToEntity(BidDTO bidDTO) {
+    //     Auction auction = auctionRepository.findById(bidDTO.getAuctionId()).orElse(null);
+
+    //     User user = userRepository.findById(bidDTO.getBidderId()).orElse(null);
+    //     if (auction == null || user == null) {
+    //         return null;
+    //     }
+
+    //     Bid bid = new Bid();
+    //     bid.setAuction(auction);
+    //     bid.setBidder(user);
+    //     bid.setBidAmount(bidDTO.getBidAmount());
+    //     bid.setBidTime(bidDTO.getBidTime());
+    //     return bid;
+    // }
 }
