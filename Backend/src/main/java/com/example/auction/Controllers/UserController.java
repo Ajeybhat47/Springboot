@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.auction.DTOModels.UserDTO;
 import com.example.auction.Models.User;
 import com.example.auction.Service.UserService;
 
@@ -14,14 +15,14 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/users/getAllUsers")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<UserDTO> getAllUsers() {
         return userService.getAllUsers();
     }
     
@@ -30,19 +31,6 @@ public class UserController {
         return userService.getUserById(id);
     }
     
-    // @PostMapping("/login")
-    // public ResponseEntity<String> loginUser(@RequestBody userLoginRequest userLoginRequest) {
-    //     User user = userService.fetchByemail(userLoginRequest.getEmail());
-        
-    //     // Check if the user exists and the password is correct
-    //     if (user != null && user.getPassword().equals(userLoginRequest.getPassword())) {
-    //         return ResponseEntity.ok("Login successful"); // Return a success response
-    //     } else {
-    //         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password"); // Return an error response
-    //     }
-
-    // }
-
 
     @PostMapping("/createUser")
     public String createUser(@RequestBody User user) {

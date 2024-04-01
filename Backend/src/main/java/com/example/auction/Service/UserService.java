@@ -3,6 +3,9 @@ package com.example.auction.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.auction.DTOModels.BidDTO;
+import com.example.auction.DTOModels.UserDTO;
+import com.example.auction.Models.Bid;
 import com.example.auction.Models.User;
 import com.example.auction.Repository.UserRepository;
 
@@ -14,8 +17,10 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream().map(this::mapEntityToDto).toList();
+        
     }
 
     public User getUserById(Long id) {
@@ -29,6 +34,16 @@ public class UserService {
     public void deleteUser(Long id){
 
         userRepository.deleteById(id);
+    }
+
+    private UserDTO mapEntityToDto(User user) {
+        return new UserDTO(
+                user.getUserId(),
+                user.getUsername(),
+                user.getEmail(),
+                null,
+                user.getRole()
+        );
     }
 
 }
