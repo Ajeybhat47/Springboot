@@ -32,6 +32,13 @@ public class BidService {
         return bids.stream().map(this::mapEntityToDto).collect(Collectors.toList());
     }
 
+    public BidDTO getBidById(Long bidId) {
+        Bid bid = bidRepository.findById(bidId).orElse(null);
+        if (bid == null) {
+            return null;
+        }
+        return mapEntityToDto(bid);
+    }
 
     public String addBid(Bid bid, Long auctionId, Long userId) {
         if (auctionId != null && userId != null && bid != null) {
@@ -47,6 +54,13 @@ public class BidService {
         }
     }
 
+    public void updateBid(Long bidId,Double price) {
+        Bid bid = bidRepository.findById(bidId).orElse(null);
+        if (bid != null) {
+            bid.setBidAmount(price);
+            bidRepository.save(bid);
+        }
+    }
 
     private BidDTO mapEntityToDto(Bid bid) {
         return new BidDTO(

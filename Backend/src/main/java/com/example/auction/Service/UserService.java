@@ -41,7 +41,6 @@ public class UserService {
                 user.getUserId(),
                 user.getUsername(),
                 user.getEmail(),
-                null,
                 user.getRole()
         );
     }

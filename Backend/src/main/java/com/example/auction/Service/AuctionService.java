@@ -50,7 +50,7 @@ public class AuctionService {
             auctionRepository.save(auction);
         }
 
-        return new UserDTO(auction.getWinner().getUserId(), auction.getWinner().getUsername(), auction.getWinner().getEmail(), null, auction.getWinner().getRole());
+        return new UserDTO(auction.getWinner().getUserId(), auction.getWinner().getUsername(), auction.getWinner().getEmail(),auction.getWinner().getRole());
         
     }
 
