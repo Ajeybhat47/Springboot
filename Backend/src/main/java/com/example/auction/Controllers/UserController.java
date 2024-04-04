@@ -15,13 +15,13 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/users/getAllUsers")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping
+    @GetMapping("/getAllUsers")
     public List<UserDTO> getAllUsers() {
         return userService.getAllUsers();
     }

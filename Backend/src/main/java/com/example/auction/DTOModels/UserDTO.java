@@ -1,5 +1,7 @@
 package com.example.auction.DTOModels;
 
+import com.example.auction.Models.User;
+
 public class UserDTO {
     
     private Long userId;
@@ -48,5 +50,14 @@ public class UserDTO {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public static UserDTO mapEntityToDto(User user) {
+        return new UserDTO(
+                user.getUserId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getRole()
+        );
     }
 }

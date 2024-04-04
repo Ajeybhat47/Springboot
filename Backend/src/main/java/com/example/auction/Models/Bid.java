@@ -26,6 +26,8 @@ public class Bid {
     @JoinColumn(name = "auction_id")
     private Auction auction;
 
+    @Column(name = "bid_status")
+    private String bidStatus;
     // Getters and setters
 
     public Bid() {

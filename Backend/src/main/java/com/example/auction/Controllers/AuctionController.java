@@ -1,26 +1,17 @@
 package com.example.auction.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import com.example.auction.DTOModels.AuctionDTO;
 import com.example.auction.DTOModels.BidDTO;
 import com.example.auction.DTOModels.UserDTO;
 import com.example.auction.Models.Auction;
-import com.example.auction.Models.Item;
 import com.example.auction.Service.AuctionService;
-import com.example.auction.Service.BidService;
-import com.example.auction.Service.ItemService;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/api/auction")
@@ -29,36 +20,67 @@ public class AuctionController {
     @Autowired
     private AuctionService auctionService;
 
-    @Autowired
-    private ItemService itemService;
-
-    @Autowired
-    private BidService bidService;
-
     @PostMapping("/createAuction")
-    public ResponseEntity<String> createAuction(@RequestBody Auction auction,@RequestParam("itemId") Long itemId) {
-
-        // Fetch item from database using provided itemId
-        Item item = itemService.getItemById(itemId);
-
-        // Associate the item with the auction
-        auction.setItem(item);
-
-        auctionService.createAuction(auction);
-
-        return ResponseEntity.ok("Auction created successfully");
+    public ResponseEntity<String> createAuction(@RequestBody Auction auction, @RequestParam("itemId") Long itemId) {
+        try {
+            String result = auctionService.createAuction(auction, itemId);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create auction: " + e.getMessage());
+        }
     }
 
-
     @GetMapping("/{auctionId}/getAllBids")
-    public ResponseEntity<List<BidDTO>> getMethodName(@PathVariable Long auctionId) {
-        return ResponseEntity.ok(bidService.getBidsForAuction(auctionId));
+    public ResponseEntity<?> getAllBids(@PathVariable Long auctionId) {
+        try {
+            List<BidDTO> bids = auctionService.getAllBids(auctionId);
+            return ResponseEntity.ok(bids);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to retrieve bids: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/getAllActiveAuctions")
+    public ResponseEntity<?> getAllActiveAuctions() {
+        try {
+            List<AuctionDTO> auctions = auctionService.getAllAuctionsByStatus("active");
+            return ResponseEntity.ok(auctions);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to retrieve active auctions: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/getAllAuctions")
+    public ResponseEntity<?> getAllAuctions() {
+        try {
+            List<AuctionDTO> auctions = auctionService.getAllAuctions();
+            return ResponseEntity.ok(auctions);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to retrieve auctions: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/getAllClosedAuctions")
+    public ResponseEntity<?> getAllClosedAuctions() {
+        try {
+            List<AuctionDTO> auctions = auctionService.getAllAuctionsByStatus("closed");
+            return ResponseEntity.ok(auctions);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to retrieve closed auctions: " + e.getMessage());
+        }
     }
 
     @GetMapping("/{auctionId}/getWinner")
-    public ResponseEntity<UserDTO> getWinner(@PathVariable Long auctionId) {
-
-        return ResponseEntity.ok(auctionService.getWinner(auctionId));
+    public ResponseEntity<?> getWinner(@PathVariable Long auctionId) {
+        try {
+            UserDTO winner = auctionService.getWinner(auctionId);
+            if (winner != null) {
+                return ResponseEntity.ok(winner);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Winner not found for auction with ID " + auctionId);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to retrieve winner: " + e.getMessage());
+        }
     }
-
 }

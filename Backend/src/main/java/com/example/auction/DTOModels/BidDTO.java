@@ -2,6 +2,8 @@ package com.example.auction.DTOModels;
 
 import java.time.LocalDateTime;
 
+import com.example.auction.Models.Bid;
+
 public class BidDTO {
     
     private Long bidId;
@@ -73,6 +75,13 @@ public class BidDTO {
                 '}';
     }
 
-
-
+    public static BidDTO mapEntityToDto(Bid bid) {
+        return new BidDTO(
+                bid.getBidId(),
+                bid.getAuction().getAuctionId(),
+                bid.getBidder().getUserId(),
+                bid.getBidAmount(),
+                bid.getBidTime()
+        );
+    }
 }

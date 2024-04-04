@@ -17,7 +17,7 @@ CREATE TABLE item (
     description TEXT,
     initial_price DOUBLE NOT NULL,
     seller_id BIGINT NOT NULL,
-    FOREIGN KEY (seller_id) REFERENCES user(user_id)
+    FOREIGN KEY (seller_id) REFERENCES user(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE auction (
@@ -26,8 +26,8 @@ CREATE TABLE auction (
     base_price DOUBLE NOT NULL,
     status VARCHAR(255) NOT NULL,
     winner_id BIGINT,
-    FOREIGN KEY (item_id) REFERENCES item(item_id),
-    FOREIGN KEY (winner_id) REFERENCES user(user_id)
+    FOREIGN KEY (item_id) REFERENCES item(item_id) ON DELETE CASCADE,
+    FOREIGN KEY (winner_id) REFERENCES user(user_id) ON DELETE SET NULL
 );
 
 CREATE TABLE bid (
@@ -36,7 +36,7 @@ CREATE TABLE bid (
     bid_amount DOUBLE NOT NULL,
     bid_time DATETIME NOT NULL,
     auction_id BIGINT NOT NULL,
-    FOREIGN KEY (bidder_id) REFERENCES user(user_id),
-    FOREIGN KEY (auction_id) REFERENCES auction(auction_id)
+    FOREIGN KEY (bidder_id) REFERENCES user(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (auction_id) REFERENCES auction(auction_id) ON DELETE CASCADE
 );
 

@@ -24,16 +24,20 @@ public class Item {
     @JoinColumn(name = "seller_id")
     private User seller;
 
+    @Column(name = "is_sold")
+    private boolean isSold = false;
+
     // Getters and setters
 
     public Item() {
     }
 
-    public Item(String itemName, String description, Double initialPrice, User seller) {
+    public Item(String itemName, String description, Double initialPrice, User seller,boolean isSold) {
         this.itemName = itemName;
         this.description = description;
         this.initialPrice = initialPrice;
         this.seller = seller;
+        this.isSold = isSold;
     }
 
     public Long getItemId() {
@@ -74,6 +78,14 @@ public class Item {
 
     public void setSeller(User seller) {
         this.seller = seller;
+    }
+
+    public boolean isSold() {
+        return isSold;
+    }
+
+    public void setSold(boolean sold) {
+        isSold = sold;
     }
 
     @Override

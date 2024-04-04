@@ -37,6 +37,7 @@ public class User {
     @JsonBackReference // For custom serialization to break the loop
     private List<Bid> bids;
 
+    
     // Getters and setter
     public User() {
     }
