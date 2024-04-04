@@ -1,4 +1,3 @@
-
 package com.example.auction.Models;
 
 import java.time.LocalDateTime;
