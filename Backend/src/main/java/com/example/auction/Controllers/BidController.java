@@ -24,14 +24,14 @@ public class BidController {
     private BidService bidService;
     
     @GetMapping("getBidById")
-    public ResponseEntity<BidDTO> getBidById(@RequestParam("bidId") Long bidId) {
+    public ResponseEntity<?> getBidById(@RequestParam("bidId") Long bidId) {
         BidDTO bid = bidService.getBidById(bidId);
         return ResponseEntity.ok(bid);
     }
 
 
     @PostMapping("/addBid")
-    public ResponseEntity<String> postMethodName(@RequestBody Bid bid , @RequestParam("auctionId") Long auctionId,@RequestParam("userId") Long userId) {
+    public ResponseEntity<?> postMethodName(@RequestBody Bid bid , @RequestParam("auctionId") Long auctionId,@RequestParam("userId") Long userId) {
 
         bidService.addBid(bid,auctionId,userId);
         
@@ -40,7 +40,7 @@ public class BidController {
     
     // recive bidId and updated bid price
     @PutMapping("/updateBid")
-    public ResponseEntity<String> updateBid(@RequestParam("bidId") Long bidId, @RequestParam("price") Double price) {
+    public ResponseEntity<?> updateBid(@RequestParam("bidId") Long bidId, @RequestParam("price") Double price) {
         bidService.updateBid(bidId, price);
         return ResponseEntity.ok("Bid is updated successfully");
     }
