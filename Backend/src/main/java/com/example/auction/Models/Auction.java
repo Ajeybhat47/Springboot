@@ -27,6 +27,10 @@ public class Auction {
     @JoinColumn(name = "winner_id")
     private User winner;
 
+    @OneToOne
+    @JoinColumn(name = "winning_bid")
+    private Bid winningBid;
+
     @Column(name = "base_price")
     private Double basePrice;
 

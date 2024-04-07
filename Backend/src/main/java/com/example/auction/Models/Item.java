@@ -14,21 +14,28 @@ public class Item {
     @Column(name = "item_name")
     private String itemName;
 
+    @Column(name = "catagory")
+    private String catagory;
+
     @Column(name = "description")
     private String description;
 
     @Column(name = "initial_price")
     private Double initialPrice;
 
+    @Column(name = "is_sold")
+    private boolean isSold = false;
+
+    @Column(name = "sold_price")
+    private Double soldPrice;
+
+    // joining refferences
+
     @ManyToOne(fetch = FetchType.LAZY) // FetchType.LAZY for lazy loading
     @JoinColumn(name = "seller_id")
     private User seller;
 
-    @Column(name = "is_sold")
-    private boolean isSold = false;
-
     // Getters and setters
-
     public Item() {
     }
 

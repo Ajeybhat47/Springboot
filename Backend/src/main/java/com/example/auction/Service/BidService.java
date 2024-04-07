@@ -11,6 +11,7 @@ import com.example.auction.Repository.BidRepository;
 import com.example.auction.Repository.UserRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,66 +26,56 @@ public class BidService {
     @Autowired
     private UserRepository userRepository;
 
-
-    public List<BidDTO> getBidsForAuction(Long auctionId) {
-        List<Bid> bids = bidRepository.findByAuctionId(auctionId);
-
-        return bids.stream().map(this::mapEntityToDto).collect(Collectors.toList());
+    public BidDTO getBidById(Long bidId) {
+        Bid bid = bidRepository.findById(bidId).orElseThrow(() -> new NoSuchElementException("Bid not found for ID: " + bidId));
+        return new BidDTO(bid);
     }
 
-    public BidDTO getBidById(Long bidId) {
-        Bid bid = bidRepository.findById(bidId).orElse(null);
+    public List<BidDTO> getAllBids(Long auctionId) {
+        List<Bid> bids = bidRepository.findByAuctionId(auctionId);
+        return bids.stream().map(BidDTO::new).collect(Collectors.toList());
+    }
+
+    public BidDTO getBidByUserId(Long userId,Long auctionId) {
+
+        Bid bid = bidRepository.findByBidderId(userId,auctionId);
         if (bid == null) {
             return null;
         }
-        return mapEntityToDto(bid);
+        return new BidDTO(bid);
     }
-
+    
+    
     public String addBid(Bid bid, Long auctionId, Long userId) {
-        if (auctionId != null && userId != null && bid != null) {
-            Auction auction = auctionRepository.getReferenceById(auctionId);
-            User user = userRepository.getReferenceById(userId);
-            bid.setBidder(user);
-            bid.setAuction(auction);
-            
-            bidRepository.save(bid);
-            return "Done";
-        } else {
-            return "error";
+        if (auctionId == null || userId == null || bid == null) {
+            throw new IllegalArgumentException("Auction ID, User ID, and Bid information must not be null.");
         }
-    }
 
-    public void updateBid(Long bidId,Double price) {
-        Bid bid = bidRepository.findById(bidId).orElse(null);
-        if (bid != null) {
-            bid.setBidAmount(price);
-            bidRepository.save(bid);
+        Auction auction = auctionRepository.findById(auctionId).orElseThrow(() -> new NoSuchElementException("Auction not found for ID: " + auctionId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("User not found for ID: " + userId));
+
+        if(getBidByUserId(userId, auctionId) != null ){
+            throw new IllegalArgumentException("Per user only one bid is allowed.");
         }
+
+        bid.setBidTime(java.time.LocalDateTime.now());
+        bid.setBidder(user);
+        bid.setAuction(auction);
+        bid.setBidStatus("pending");
+
+        bidRepository.save(bid);
+        return "Bid is added successfully";
     }
 
-    private BidDTO mapEntityToDto(Bid bid) {
-        return new BidDTO(
-                bid.getBidId(),
-                bid.getAuction().getAuctionId(),
-                bid.getBidder().getUserId(),
-                bid.getBidAmount(),
-                bid.getBidTime()
-        );
+
+    public void updateBid(Long bidId, Double price) {
+        if (price == null || price <= 0) {
+            throw new IllegalArgumentException("Price must be a positive value.");
+        }
+
+        Bid bid = bidRepository.findById(bidId).orElseThrow(() -> new NoSuchElementException("Bid not found for ID: " + bidId));
+
+        bid.setBidAmount(price);
+        bidRepository.save(bid);
     }
-
-    // private Bid mapDtoToEntity(BidDTO bidDTO) {
-    //     Auction auction = auctionRepository.findById(bidDTO.getAuctionId()).orElse(null);
-
-    //     User user = userRepository.findById(bidDTO.getBidderId()).orElse(null);
-    //     if (auction == null || user == null) {
-    //         return null;
-    //     }
-
-    //     Bid bid = new Bid();
-    //     bid.setAuction(auction);
-    //     bid.setBidder(user);
-    //     bid.setBidAmount(bidDTO.getBidAmount());
-    //     bid.setBidTime(bidDTO.getBidTime());
-    //     return bid;
-    // }
 }

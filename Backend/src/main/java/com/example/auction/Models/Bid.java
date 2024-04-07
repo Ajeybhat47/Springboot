@@ -82,6 +82,15 @@ public class Bid {
         this.auction = auction;
     }
 
+    
+    public String getBidStatus() {
+        return bidStatus;
+    }
+
+    public void setBidStatus(String bidStatus) {
+        this.bidStatus = bidStatus;
+    }
+
     @Override
     public String toString() {
         return "Bid{" +

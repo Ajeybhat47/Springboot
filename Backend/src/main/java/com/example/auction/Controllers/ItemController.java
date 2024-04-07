@@ -1,17 +1,14 @@
 package com.example.auction.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.auction.Models.Item;
-import com.example.auction.Models.User;
 import com.example.auction.Service.ItemService;
-import com.example.auction.Service.UserService;
+
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/item")
@@ -20,20 +17,37 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
-    @Autowired
-    private UserService userService;
-
-    @PostMapping("/createItem")
+    @PostMapping("/create")
     public ResponseEntity<String> createItem(@RequestBody Item item, @RequestParam("userId") Long userId) {
-        // Fetch user from database using provided userId
-        User seller = userService.getUserById(userId);
-        
-        // Associate the user with the item
-        item.setSeller(seller);
-        
-        // Save the new item
-        itemService.createItem(item);
+        try {
+            itemService.createItem(item, userId);
+            return ResponseEntity.ok("Item created successfully");
+        } catch (IllegalArgumentException | NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating item");
+        }
+    }
 
-        return ResponseEntity.ok("Item created successfully");
+    @GetMapping("/getItem")
+    public ResponseEntity<?> getItemById(@RequestParam("itemId") Long itemId) {
+        try {
+            Item item = itemService.getItemById(itemId);
+            return ResponseEntity.ok(item);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not found");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching item");
+        }
+    }
+
+    @DeleteMapping("/deleteItem")
+    public ResponseEntity<String> deleteItem(@RequestParam("itemId") Long itemId) {
+        try {
+            String result = itemService.deleteItem(itemId);
+            return ResponseEntity.ok(result);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting item");
+        }
     }
 }

@@ -15,6 +15,13 @@ public class BidDTO {
     public BidDTO() {
     }
 
+    public BidDTO(Bid bid) {
+        this.bidId = bid.getBidId();
+        this.auctionId = bid.getAuction().getAuctionId();
+        this.bidderId = bid.getBidder().getUserId();
+        this.bidAmount = bid.getBidAmount();
+        this.bidTime = bid.getBidTime();
+    }
     public BidDTO(Long bidId, Long auctionId, Long bidderId,Double bidAmount, LocalDateTime bidTime) {
         this.bidId = bidId;
         this.auctionId = auctionId;

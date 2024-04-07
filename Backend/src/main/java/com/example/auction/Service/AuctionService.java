@@ -67,7 +67,7 @@ public class AuctionService
         if (auction == null) {
             throw new IllegalArgumentException("Auction not found with ID: " + auctionId);
         }
-        return bidService.getBidsForAuction(auctionId);
+        return bidService.getAllBids(auctionId);
     }
 
 
@@ -105,7 +105,7 @@ public class AuctionService
     }
     // Method to find the winner, you can implement your logic here
     public Long findWinner(Long auctionId) {
-        List<BidDTO> bids = bidService.getBidsForAuction(auctionId);
+        List<BidDTO> bids = bidService.getAllBids(auctionId);
     
         if (bids.isEmpty()) {
             System.out.println("No bids found for auction with id: " + auctionId);
