@@ -1,10 +1,8 @@
 package com.example.auction.Controllers;
-// UserController.java
-
 
 import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.http.HttpStatus;
-// import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.auction.DTOModels.UserDTO;
@@ -13,7 +11,6 @@ import com.example.auction.Service.UserService;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -21,38 +18,50 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/getAllUsers")
-    public List<UserDTO> getAllUsers() {
-        return userService.getAllUsers();
-    }
     
-    @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
+    @GetMapping("/getAll")
+    public ResponseEntity<?> getAllUsers() {
+        try {
+            List<UserDTO> users = userService.getAllUsers();
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred: " + e.getMessage());
+        }
     }
-    
 
-    @PostMapping("/createUser")
-    public String createUser(@RequestBody User user) {
-        userService.createUser(user);
-        return "Saved..." ;
+    @GetMapping("/getUserById")
+    public ResponseEntity<?> getUserById(@RequestParam("userId") Long id) {
+        try {
+            UserDTO user = userService.getUserDTOById(id);
+            if (user != null) {
+                return ResponseEntity.ok(user);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<String> createUser(@RequestBody User user) {
+        try {
+            userService.createUser(user);
+            return ResponseEntity.ok("User created successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/delete/{id}")
-    public String deleteUser(@PathVariable Long id)
-    {
-        userService.deleteUser(id);
-        return "Deleted...";
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+        try {
+            userService.deleteUser(id);
+            return ResponseEntity.ok("User deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred: " + e.getMessage());
+        }
     }
 
-    
-
-
-    // @GetMapping("/byid/{id}")
-    // public String Custom(@PathVariable Long id){
-        
-        
-    //     return userService.Custom(id).getUsername();
-    // }
 
 }

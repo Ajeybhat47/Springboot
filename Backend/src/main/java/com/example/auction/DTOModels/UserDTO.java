@@ -20,6 +20,13 @@ public class UserDTO {
         this.role = role;
     }
 
+    public UserDTO(User user) {
+        this.userId = user.getUserId();
+        this.userName = user.getUsername();
+        this.email = user.getEmail();
+        this.role = user.getRole();
+    }
+
     public Long getUserId() {
         return userId;
     }

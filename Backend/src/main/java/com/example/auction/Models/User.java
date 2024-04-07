@@ -29,6 +29,7 @@ public class User {
     @Column(name = "role")
     private String role;
 
+    // mappings
 
     @OneToMany(mappedBy = "winner")
     private List<AuctionDTO> wonAuctions;
