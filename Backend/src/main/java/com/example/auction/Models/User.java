@@ -3,8 +3,6 @@ package com.example.auction.Models;
 import jakarta.persistence.*;
 import java.util.List;
 
-import com.example.auction.DTOModels.AuctionDTO;
-import com.example.auction.DTOModels.BidDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
@@ -29,17 +27,15 @@ public class User {
     @Column(name = "role")
     private String role;
 
-    // mappings
-
     @OneToMany(mappedBy = "winner")
-    private List<AuctionDTO> wonAuctions;
+    private List<Auction> wonAuctions;
 
     @OneToMany(mappedBy = "seller")
     private List<Item> itemsForSale;
 
     @OneToMany(mappedBy = "bidder")
     @JsonBackReference // For custom serialization to break the loop
-    private List<BidDTO> bids;
+    private List<Bid> bids;
 
     
     // Getters and setter
@@ -93,11 +89,11 @@ public class User {
         this.role = role;
     }
 
-    public List<AuctionDTO> getWonAuctions() {
+    public List<Auction> getWonAuctions() {
         return wonAuctions;
     }
 
-    public void setWonAuctions(List<AuctionDTO> wonAuctions) {
+    public void setWonAuctions(List<Auction> wonAuctions) {
         this.wonAuctions = wonAuctions;
     }
 
@@ -109,11 +105,11 @@ public class User {
         this.itemsForSale = itemsForSale;
     }
 
-    public List<BidDTO> getBids() {
+    public List<Bid> getBids() {
         return bids;
     }
 
-    public void setBids(List<BidDTO> bids) {
+    public void setBids(List<Bid> bids) {
         this.bids = bids;
     }
 
@@ -122,6 +118,7 @@ public class User {
         return "User{" +
                 "userId=" + userId +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 ", username='" + username + '\'' +
                 ", role='" + role + '\'' +
                 '}';
