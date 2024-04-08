@@ -2,6 +2,7 @@ package com.example.auction.Models;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -15,17 +16,6 @@ public class Auction {
     @Column(name = "auction_id")
     private Long auctionId;
 
-    @ManyToOne
-    @JoinColumn(name = "item_id")
-    private Item item;
-
-    @OneToMany(mappedBy = "auction")
-    @JsonBackReference // For custom serialization to break the loop
-    private List<Bid> bids;
-
-    @ManyToOne
-    @JoinColumn(name = "winner_id")
-    private User winner;
 
     @OneToOne
     @JoinColumn(name = "winning_bid")
@@ -37,8 +27,23 @@ public class Auction {
     @Column(name = "status")
     private String status;
 
-    // Getters and setters
+    @Column(name = "closing_time")
+    private LocalDateTime closingTime;
 
+    // mappings
+
+     @ManyToOne
+    @JoinColumn(name = "item_id")
+    private Item item;
+
+    @OneToMany(mappedBy = "auction")
+    @JsonBackReference // For custom serialization to break the loop
+    private List<Bid> bids;
+
+    @ManyToOne
+    @JoinColumn(name = "winner_id")
+    private User winner;
+    // Getters and setters
     public Auction() {
     }
 
@@ -86,6 +91,30 @@ public class Auction {
 
     public void setWinner(User winner) {
         this.winner = winner;
+    }
+
+    public LocalDateTime getClosingTime() {
+        return closingTime;
+    }
+
+    public void setClosingTime(LocalDateTime closingTime) {
+        this.closingTime = closingTime;
+    }
+
+    public Bid getWinningBid() {
+        return winningBid;
+    }
+
+    public void setWinningBid(Bid winningBid) {
+        this.winningBid = winningBid;
+    }
+
+    public List<Bid> getBids() {
+        return bids;
+    }
+
+    public void setBids(List<Bid> bids) {
+        this.bids = bids;
     }
 
     @Override

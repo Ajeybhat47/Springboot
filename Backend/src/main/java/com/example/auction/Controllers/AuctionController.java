@@ -25,6 +25,8 @@ public class AuctionController {
         try {
             String result = auctionService.createAuction(auction, itemId);
             return ResponseEntity.ok(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create auction: " + e.getMessage());
         }
@@ -35,6 +37,8 @@ public class AuctionController {
         try {
             List<BidDTO> bids = auctionService.getAllBids(auctionId);
             return ResponseEntity.ok(bids);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to retrieve bids: " + e.getMessage());
         }
@@ -70,6 +74,18 @@ public class AuctionController {
         }
     }
 
+    @PostMapping("/closeAuction")
+    public ResponseEntity<?> closeAuction(@RequestParam Long auctionId) {
+        try {
+            String result = auctionService.closeAuction(auctionId);
+            return ResponseEntity.ok(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to close auction: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/{auctionId}/getWinner")
     public ResponseEntity<?> getWinner(@PathVariable Long auctionId) {
         try {
@@ -79,6 +95,8 @@ public class AuctionController {
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Winner not found for auction with ID " + auctionId);
             }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to retrieve winner: " + e.getMessage());
         }
