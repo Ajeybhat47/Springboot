@@ -21,7 +21,7 @@ public class AuctionController {
     private AuctionService auctionService;
 
     @PostMapping("/createAuction")
-    public ResponseEntity<String> createAuction(@RequestBody Auction auction, @RequestParam("itemId") Long itemId) {
+    public ResponseEntity<?> createAuction(@RequestBody Auction auction, @RequestParam("itemId") Long itemId) {
         try {
             String result = auctionService.createAuction(auction, itemId);
             return ResponseEntity.ok(result);
