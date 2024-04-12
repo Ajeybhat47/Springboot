@@ -33,6 +33,14 @@ public class UserService {
             throw new RuntimeException("Error occurred while fetching user by ID: " + e.getMessage(), e);
         }
     }
+    public User getUserByUsername(String username) {
+        try {
+            return userRepository.findByUsername(username).orElseThrow(() -> new NoSuchElementException("User not found"));
+        } catch (Exception e) {
+            throw new RuntimeException("Error occurred while fetching user by username: " + e.getMessage(), e);
+        }
+    }
+
 
     public UserDTO getUserDTOById(Long id) {
         try {

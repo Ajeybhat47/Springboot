@@ -8,17 +8,39 @@ import org.springframework.web.bind.annotation.*;
 import com.example.auction.DTOModels.UserDTO;
 import com.example.auction.Models.User;
 import com.example.auction.Service.UserService;
+import org.springframework.stereotype.Controller;
+
+import org.springframework.ui.Model;
+// import com.example.auction.Repository.UserRepository;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/api/users")
 public class UserController {
+    // @Autowired
+    // private UserRepository userRepository;
 
     @Autowired
     private UserService userService;
 
-    
+    // @GetMapping("/login")
+    // public String login() {
+    //     return "login";
+    // }
+
+    // @PostMapping("/login")
+    // public String login(@RequestParam String username, @RequestParam String password, Model model) {
+    //     User user = userService.getUserByUsername(username);
+    //     if (user != null && user.getPassword().equals(password)) {
+    //         model.addAttribute("user", user);
+    //         return "home";
+    //     } else {
+    //         model.addAttribute("error", "Invalid username or password");
+    //         return "login";
+    //     }
+    // }
+
     @GetMapping("/getAll")
     public ResponseEntity<?> getAllUsers() {
         try {
