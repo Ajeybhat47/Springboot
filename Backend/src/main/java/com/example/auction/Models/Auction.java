@@ -1,10 +1,9 @@
 package com.example.auction.Models;
 
-import jakarta.persistence.*;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
@@ -15,7 +14,6 @@ public class Auction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "auction_id")
     private Long auctionId;
-
 
     @OneToOne
     @JoinColumn(name = "winning_bid")
@@ -30,9 +28,8 @@ public class Auction {
     @Column(name = "closing_time")
     private LocalDateTime closingTime;
 
-    // mappings
-
-     @ManyToOne
+    // Joining references
+    @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
 
@@ -42,17 +39,20 @@ public class Auction {
 
     @ManyToOne
     @JoinColumn(name = "winner_id")
-    private User winner;
-    // Getters and setters
+    private Trader winner;
+
+    // Constructors
     public Auction() {
     }
 
-    public Auction(Item item, Double basePrice, String status) {
+    public Auction(Item item, Double basePrice, String status, LocalDateTime closingTime) {
         this.item = item;
         this.basePrice = basePrice;
         this.status = status;
+        this.closingTime = closingTime;
     }
 
+    // Getters and setters
     public Long getAuctionId() {
         return auctionId;
     }
@@ -61,12 +61,12 @@ public class Auction {
         this.auctionId = auctionId;
     }
 
-    public Item getItem() {
-        return item;
+    public Bid getWinningBid() {
+        return winningBid;
     }
 
-    public void setItem(Item item) {
-        this.item = item;
+    public void setWinningBid(Bid winningBid) {
+        this.winningBid = winningBid;
     }
 
     public Double getBasePrice() {
@@ -85,14 +85,6 @@ public class Auction {
         this.status = status;
     }
 
-    public User getWinner() {
-        return winner;
-    }
-
-    public void setWinner(User winner) {
-        this.winner = winner;
-    }
-
     public LocalDateTime getClosingTime() {
         return closingTime;
     }
@@ -101,12 +93,12 @@ public class Auction {
         this.closingTime = closingTime;
     }
 
-    public Bid getWinningBid() {
-        return winningBid;
+    public Item getItem() {
+        return item;
     }
 
-    public void setWinningBid(Bid winningBid) {
-        this.winningBid = winningBid;
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     public List<Bid> getBids() {
@@ -117,6 +109,14 @@ public class Auction {
         this.bids = bids;
     }
 
+    public Trader getWinner() {
+        return winner;
+    }
+
+    public void setWinner(Trader winner) {
+        this.winner = winner;
+    }
+
     @Override
     public String toString() {
         return "Auction{" +
@@ -124,9 +124,8 @@ public class Auction {
                 ", item=" + item +
                 ", basePrice=" + basePrice +
                 ", status='" + status + '\'' +
+                ", closingTime=" + closingTime +
                 ", winner=" + winner +
                 '}';
     }
-
-
 }

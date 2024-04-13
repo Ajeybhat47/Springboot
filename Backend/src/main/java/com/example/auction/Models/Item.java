@@ -14,8 +14,8 @@ public class Item {
     @Column(name = "item_name")
     private String itemName;
 
-    @Column(name = "catagory")
-    private String catagory;
+    @Column(name = "category")
+    private String category;
 
     @Column(name = "description")
     private String description;
@@ -23,30 +23,26 @@ public class Item {
     @Column(name = "initial_price")
     private Double initialPrice;
 
+    @ManyToOne(fetch = FetchType.LAZY) // FetchType.LAZY for lazy loading
+    @JoinColumn(name = "seller_id")
+    private Farmer seller;
+
     @Column(name = "is_sold")
     private boolean isSold = false;
 
-    @Column(name = "sold_price")
-    private Double soldPrice;
-
-    // joining refferences
-
-    @ManyToOne(fetch = FetchType.LAZY) // FetchType.LAZY for lazy loading
-    @JoinColumn(name = "seller_id")
-    private User seller;
-
-    // Getters and setters
+    // Constructors
     public Item() {
     }
 
-    public Item(String itemName, String description, Double initialPrice, User seller,boolean isSold) {
+    public Item(String itemName, String category, String description, Double initialPrice, Farmer seller) {
         this.itemName = itemName;
+        this.category = category;
         this.description = description;
         this.initialPrice = initialPrice;
         this.seller = seller;
-        this.isSold = isSold;
     }
 
+    // Getters and setters
     public Long getItemId() {
         return itemId;
     }
@@ -61,6 +57,14 @@ public class Item {
 
     public void setItemName(String itemName) {
         this.itemName = itemName;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getDescription() {
@@ -79,11 +83,11 @@ public class Item {
         this.initialPrice = initialPrice;
     }
 
-    public User getSeller() {
+    public Farmer getSeller() {
         return seller;
     }
 
-    public void setSeller(User seller) {
+    public void setSeller(Farmer seller) {
         this.seller = seller;
     }
 
@@ -95,15 +99,16 @@ public class Item {
         isSold = sold;
     }
 
+    // ToString method
     @Override
     public String toString() {
         return "Item{" +
                 "itemId=" + itemId +
                 ", itemName='" + itemName + '\'' +
+                ", category='" + category + '\'' +
                 ", description='" + description + '\'' +
                 ", initialPrice=" + initialPrice +
                 ", seller=" + seller +
                 '}';
     }
-    
 }

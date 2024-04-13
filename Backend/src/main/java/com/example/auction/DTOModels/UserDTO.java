@@ -8,23 +8,23 @@ public class UserDTO {
     private String userName;
     private String email;
     
-    private String role;
+    // private String role;
 
     public UserDTO() {
     }
 
-    public UserDTO(Long userId, String userName, String email, String role) {
+    public UserDTO(Long userId, String userName, String email) {
         this.userId = userId;
         this.userName = userName;
         this.email = email;
-        this.role = role;
+        // this.role = role;
     }
 
     public UserDTO(User user) {
         this.userId = user.getUserId();
         this.userName = user.getUsername();
         this.email = user.getEmail();
-        this.role = user.getRole();
+        
     }
 
     public Long getUserId() {
@@ -51,20 +51,20 @@ public class UserDTO {
         this.email = email;
     }
 
-    public String getRole() {
-        return role;
-    }
+    // public String getRole() {
+    //     return role;
+    // }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
+    // public void setRole(String role) {
+    //     this.role = role;
+    // }
 
     public static UserDTO mapEntityToDto(User user) {
         return new UserDTO(
                 user.getUserId(),
                 user.getUsername(),
-                user.getEmail(),
-                user.getRole()
+                user.getEmail()
+                
         );
     }
 }

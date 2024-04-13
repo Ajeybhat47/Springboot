@@ -19,23 +19,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/api/bid")
 public class BidController {
 
-
     @Autowired
     private BidService bidService;
     
     @PostMapping("/addBid")
-    public ResponseEntity<?> addBid(@RequestBody Bid bid, @RequestParam("auctionId") Long auctionId, @RequestParam("userId") Long userId) {
+    public ResponseEntity<?> addBid(@RequestBody Bid bid, @RequestParam("auctionId") Long auctionId, @RequestParam("traderId") Long traderId) {
         try {
-            String result = bidService.addBid(bid, auctionId, userId);
+            String result = bidService.addBid(bid, auctionId, traderId);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @GetMapping("/getBidByUserId")
-    public ResponseEntity<?> getBidById(@RequestParam("bidderId") Long biderId, @RequestParam("auctionId") Long auctionId) {
-        BidDTO bid = bidService.getBidByUserId(biderId, auctionId);
+    @GetMapping("/getBidByTraderId")
+    public ResponseEntity<?> getBidByTraderId(@RequestParam("traderId") Long traderId, @RequestParam("auctionId") Long auctionId) {
+        BidDTO bid = bidService.getBidByTraderId(traderId, auctionId);
         if (bid != null) {
             return ResponseEntity.ok(bid);
         } else {
@@ -47,7 +46,7 @@ public class BidController {
     public ResponseEntity<?> updateBid(@RequestParam("bidId") Long bidId, @RequestParam("price") Double price) {
         try {
             bidService.updateBid(bidId, price);
-            return ResponseEntity.ok("Bid is updated successfully");
+            return ResponseEntity.ok("Bid updated successfully");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

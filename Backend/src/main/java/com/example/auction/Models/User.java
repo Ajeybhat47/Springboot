@@ -1,53 +1,47 @@
 package com.example.auction.Models;
 
 import jakarta.persistence.*;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 
 @Entity
 @Table(name = "user")
-public class User {
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
-    @Column(name = "role")
-    private String role;
+    // Getters and setters constr
 
-    @OneToMany(mappedBy = "winner")
-    private List<Auction> wonAuctions;
-
-    @OneToMany(mappedBy = "seller")
-    private List<Item> itemsForSale;
-
-    @OneToMany(mappedBy = "bidder")
-    @JsonBackReference // For custom serialization to break the loop
-    private List<Bid> bids;
-
-    
-    // Getters and setter
     public User() {
     }
 
-    public User(String email, String password, String username, String role) {
+    public User(String username, String password, String email) {
         this.email = email;
         this.password = password;
         this.username = username;
-        this.role = role;
     }
+
+    public User(Long userId, String email, String password, String username) {
+        this.userId = userId;
+        this.email = email;
+        this.password = password;
+        this.username = username;
+    }
+
+    
+
+    
 
     public Long getUserId() {
         return userId;
@@ -81,49 +75,5 @@ public class User {
         this.username = username;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public List<Auction> getWonAuctions() {
-        return wonAuctions;
-    }
-
-    public void setWonAuctions(List<Auction> wonAuctions) {
-        this.wonAuctions = wonAuctions;
-    }
-
-    public List<Item> getItemsForSale() {
-        return itemsForSale;
-    }
-
-    public void setItemsForSale(List<Item> itemsForSale) {
-        this.itemsForSale = itemsForSale;
-    }
-
-    public List<Bid> getBids() {
-        return bids;
-    }
-
-    public void setBids(List<Bid> bids) {
-        this.bids = bids;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", username='" + username + '\'' +
-                ", role='" + role + '\'' +
-                '}';
-    }
-
-    
-
+    // Additional methods and attributes as needed
 }

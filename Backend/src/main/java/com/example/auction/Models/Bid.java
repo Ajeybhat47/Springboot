@@ -1,5 +1,6 @@
 package com.example.auction.Models;
 
+
 import java.time.LocalDateTime;
 import jakarta.persistence.*;
 
@@ -12,35 +13,36 @@ public class Bid {
     @Column(name = "bid_id")
     private Long bidId;
 
-    @ManyToOne
-    @JoinColumn(name = "bidder_id")
-    private User bidder;
-
     @Column(name = "bid_amount")
     private Double bidAmount;
 
     @Column(name = "bid_time")
     private LocalDateTime bidTime;
 
+    
+    @Column(name = "bid_status")
+    private String bidStatus;
+
+    @ManyToOne
+    @JoinColumn(name = "bidder_id")
+    private Trader bidder;
+    
     @ManyToOne(fetch = FetchType.LAZY) // FetchType.LAZY for lazy loading
     @JoinColumn(name = "auction_id")
     private Auction auction;
 
-    @Column(name = "bid_status")
-    private String bidStatus;
-    // Getters and setters
-
+    // Constructors
     public Bid() {
     }
 
-
-    public Bid(User bidder, Double bidAmount, LocalDateTime bidTime, Auction auction) {
+    public Bid(Trader bidder, Double bidAmount, LocalDateTime bidTime, Auction auction) {
         this.bidder = bidder;
         this.bidAmount = bidAmount;
         this.bidTime = bidTime;
         this.auction = auction;
     }
 
+    // Getters and setters
     public Long getBidId() {
         return bidId;
     }
@@ -49,11 +51,11 @@ public class Bid {
         this.bidId = bidId;
     }
 
-    public User getBidder() {
+    public Trader getBidder() {
         return bidder;
     }
 
-    public void setBidder(User bidder) {
+    public void setBidder(Trader bidder) {
         this.bidder = bidder;
     }
 
@@ -64,7 +66,6 @@ public class Bid {
     public void setBidAmount(Double bidAmount) {
         this.bidAmount = bidAmount;
     }
-
 
     public LocalDateTime getBidTime() {
         return bidTime;
@@ -82,7 +83,6 @@ public class Bid {
         this.auction = auction;
     }
 
-    
     public String getBidStatus() {
         return bidStatus;
     }
@@ -91,6 +91,7 @@ public class Bid {
         this.bidStatus = bidStatus;
     }
 
+    // ToString method
     @Override
     public String toString() {
         return "Bid{" +
@@ -101,5 +102,4 @@ public class Bid {
                 ", auction=" + auction +
                 '}';
     }
-    
 }

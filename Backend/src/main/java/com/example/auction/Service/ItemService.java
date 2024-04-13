@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.auction.Models.Item;
-import com.example.auction.Models.User;
+import com.example.auction.Models.Farmer;
+import com.example.auction.Repository.FarmerRepository;
 import com.example.auction.Repository.ItemRepository;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
 
 @Service
 public class ItemService {
@@ -17,24 +19,22 @@ public class ItemService {
     private ItemRepository itemRepository;
 
     @Autowired
-    private UserService userService;
+    private FarmerRepository farmerRepository;
 
-    public void createItem(Item item, Long userId) {
+    public void createItem(Item item, Long farmerId) {
         try {
             if (item == null) {
                 throw new IllegalArgumentException("Item cannot be null");
             }
-            
-            if (userId == null) {
-                throw new IllegalArgumentException("User ID cannot be null");
+
+            if (farmerId == null) {
+                throw new IllegalArgumentException("Farmer ID cannot be null");
             }
 
-            User user = userService.getUserById(userId);
-            if (user == null) {
-                throw new NoSuchElementException("User not found");
-            }
+            Farmer farmer = farmerRepository.findById(farmerId)
+                    .orElseThrow(() -> new NoSuchElementException("Farmer not found"));
 
-            item.setSeller(user);
+            item.setSeller(farmer);
             itemRepository.save(item);
         } catch (Exception e) {
             throw new RuntimeException("Error occurred while creating item: " + e.getMessage(), e);

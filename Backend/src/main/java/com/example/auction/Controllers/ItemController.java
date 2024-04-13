@@ -18,9 +18,9 @@ public class ItemController {
     private ItemService itemService;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createItem(@RequestBody Item item, @RequestParam("userId") Long userId) {
+    public ResponseEntity<String> createItem(@RequestBody Item item, @RequestParam("farmerId") Long farmerId) {
         try {
-            itemService.createItem(item, userId);
+            itemService.createItem(item, farmerId);
             return ResponseEntity.ok("Item created successfully");
         } catch (IllegalArgumentException | NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
